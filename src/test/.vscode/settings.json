@@ -1,0 +1,4 @@
+{
+    "lsp-middleware-test.trace.server": "verbose",
+    "python.languageServer": "Jedi"
+}

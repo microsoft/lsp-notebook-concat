@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Integration Tests (uses VS code)",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "${workspaceRoot}/src/test",
+                "--enable-proposed-api=ms-vscode.lsp-notebook-concat", // Name of test extension
+                "--extensionDevelopmentPath=${workspaceFolder:lsp-notebook-concat}/out/test", // Location where extension.ts goes
+                "--extensionTestsPath=${workspaceFolder:lsp-notebook-concat}/out/test/suite/index", // Location of test files,
+                "--skip-welcome",
+                "--skip-release-notes",
+                "--disable-workspace-trust"
+            ],
+            "stopOnEntry": true,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js",
+                "${workspaceFolder}/dist/**/*.js",
+                "!${workspaceFolder}/**/node_modules**/*"
+            ],
+            "env": {
+                // Set this to specify grep for test matching
+                "CI_TEST_GREP": ""
+            },
+            "preLaunchTask": "BuildTests",
+            "skipFiles": ["<node_internals>/**"],
+            "presentation": {
+                "group": "2_tests",
+                "order": 5
+            }
+        }
+    ]
+}

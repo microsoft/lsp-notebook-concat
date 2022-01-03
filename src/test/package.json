@@ -1,0 +1,25 @@
+{
+  "name": "lsp-notebook-concat",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./extension.js",
+  "publisher": "ms-vscode",
+  "enabledApiProposals": [
+    "notebookEditor"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": {
+      "supported": true
+    }
+  },
+  "engines": {
+    "vscode": "^1.57.0"
+  },
+  "activationEvents": [
+    "*"
+  ],
+  "license": "MIT"
+}
