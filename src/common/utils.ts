@@ -42,6 +42,9 @@ export function isInteractiveCell(cellUri: vscodeUri.URI): boolean {
         cellUri.scheme.includes(InteractiveScheme)
     );
 }
+export function isNotebookCell(uri: vscodeUri.URI): boolean {
+    return uri.scheme.includes(NotebookCellScheme) || uri.scheme.includes(InteractiveInputScheme);
+}
 
 export function splitLines(str: string): string[] {
     let lines = str.split(/\r?\n/g);
