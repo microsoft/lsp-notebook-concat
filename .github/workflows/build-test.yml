@@ -78,6 +78,9 @@ jobs:
         with:
           PYTHON_VERSION: ${{matrix.pythonVersion}}
 
+      - run: Build test
+        name: npm run buildTests
+
       - name: Run tests using xvfb
         env:
           DISPLAY: 10
