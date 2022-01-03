@@ -9,7 +9,7 @@
         "copyTestAssets": "node ./scripts/prepareTest.js",
         "compilewatch": "tsc -watch -p ./",
         "buildTests": "npm run copyTestAssets && npm run compilewatch",
-        "test": "npm run copyTestAssets && node ./out/test/runTest.js",
+        "test": "npm run compile && npm run copyTestAssets && node ./out/test/runTest.js",
         "webpack": "webpack --mode production",
         "webpack-link": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch"
