@@ -1,6 +1,6 @@
 {
     "name": "@vscode/lsp-notebook-concat",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "Notebook cell concatentation for language servers",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
