@@ -43,6 +43,10 @@ const TypeIgnoreTransforms = [{ regex: /(^\s*%.*)/ }, { regex: /(^\s*!.*)/ }, { 
 
 const NotebookConcatPrefix = '_NotebookConcat_';
 
+export function getConcatDocumentRoot(cellUri: vscodeUri.URI) {
+    return path.dirname(cellUri.fsPath);
+}
+
 export class NotebookConcatDocument implements ITextDocument {
     public get uri(): vscodeUri.URI {
         return this.concatUri;
@@ -92,10 +96,6 @@ export class NotebookConcatDocument implements ITextDocument {
     private _spans: NotebookSpan[] = [];
     private _lines: NotebookConcatLine[] = [];
     private _realLines: NotebookConcatLine[] = [];
-
-    public static getConcatDocRoot(cellUri: vscodeUri.URI) {
-        return path.dirname(cellUri.fsPath);
-    }
 
     constructor(public key: string, private readonly getNotebookHeader: (uri: vscodeUri.URI) => string) {}
 
@@ -883,7 +883,7 @@ export class NotebookConcatDocument implements ITextDocument {
     private initialize(cellUri: vscodeUri.URI) {
         if (!this._concatUri?.fsPath) {
             this._interactiveWindow = isInteractiveCell(cellUri);
-            const dir = NotebookConcatDocument.getConcatDocRoot(cellUri);
+            const dir = getConcatDocumentRoot(cellUri);
 
             // Path has to match no matter how many times we open it.
             const concatFilePath = path.join(
