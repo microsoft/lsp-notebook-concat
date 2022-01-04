@@ -11,7 +11,9 @@ import { createLocation, createPosition, createRange } from './helper';
 /**
  * Class responsible for converting incoming requests to outgoing types based on a concatenated document instead.
  */
-export class NotebookConverter implements IDisposable {
+export type NotebookConverter = InstanceType<typeof NotebookConverterImpl>
+
+export class NotebookConverterImpl implements IDisposable {
     private activeConcats: Map<string, NotebookConcatDocument> = new Map<string, NotebookConcatDocument>();
 
     private activeConcatsOutgoingMap: Map<string, NotebookConcatDocument> = new Map<string, NotebookConcatDocument>();
