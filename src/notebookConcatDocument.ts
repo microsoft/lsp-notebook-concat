@@ -171,7 +171,7 @@ export class NotebookConcatDocument implements ITextDocument {
                         // a new diff. This should be the odd ball case.
                         // DEBT: Could try using the fast-myers-diff again. Problem was with deletes across multiple lines.
                         const fromPosition = oldCellLines[0].range.start;
-                        const toPosition = oldCellLines[oldCellLines.length - 1].rangeIncludingLineBreak.end;
+                        const toPosition = { line: oldCellLines.length, character: 0 };
 
                         changes.push({
                             text: newText,

@@ -322,7 +322,11 @@ suite('concatTextDocument', () => {
                 );
 
                 // Then deletion
-                applyEdit(concat, cells[0], 0, 0, '', 0, 1);
+                const edit = applyEdit(concat, cells[0], 0, 0, '', 0, 1);
+                assert.strictEqual(edit?.contentChanges[0].text, 'import IPython\nIPython.get_ipython()\nwait print(1)\n', 'Edit should be a complete replace')
+                assert.strictEqual((edit.contentChanges[0] as any).range.start.line, 0)
+                assert.strictEqual((edit.contentChanges[0] as any).range.end.line, 3)
+                assert.strictEqual((edit.contentChanges[0] as any).range.end.character, 0)
                 assert.strictEqual(
                     concat.getText(),
                     [
