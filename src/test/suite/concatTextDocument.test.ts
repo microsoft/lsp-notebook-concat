@@ -289,6 +289,38 @@ suite('concatTextDocument', () => {
         );
     });
 
+    test('Cell with magics/shell escape/await with typeIgnore off', () => {
+        withTestNotebook(
+            vscodeUri.URI.from({ scheme: 'vscode-notebook', path: 'test.ipynb' }),
+            [
+                [['await print(1)'], 'python', 'code', [], {}],
+                [['test'], 'markdown', 'markup', [], {}],
+                [['%foo = 2', 'print(foo)'], 'python', 'code', [], {}],
+                [['%%foo = 2', 'print(foo)'], 'python', 'code', [], {}],
+                [['!foo = 2', 'print(foo)'], 'python', 'code', [], {}]
+            ],
+            (uri: vscodeUri.URI, cells: ICell[]) => {
+                const concat = generateConcat(uri, cells, undefined, /*disableTypeIgnore*/ true);
+                assert.strictEqual(concat.lineCount, 9);
+                assert.strictEqual(concat.languageId, 'python');
+                assert.strictEqual(
+                    concat.getText(),
+                    [
+                        HeaderText,
+                        'await print(1)',
+                        '%foo = 2',
+                        'print(foo)',
+                        '%%foo = 2',
+                        'print(foo)',
+                        '!foo = 2',
+                        'print(foo)',
+                        ''
+                    ].join('\n')
+                );
+            }
+        );
+    });
+
     test('Edit a magic/shell/await', () => {
         withTestNotebook(
             vscodeUri.URI.from({ scheme: 'vscode-notebook', path: 'test.ipynb' }),

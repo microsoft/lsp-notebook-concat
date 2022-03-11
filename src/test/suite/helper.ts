@@ -52,8 +52,8 @@ export function withTestNotebook(
     callback(uri, mapped);
 }
 
-export function generateConcat(uri: vscodeUri.URI, cells: ICell[], extraCells?: ICell[]) {
-    const concat = new NotebookConcatDocument(uri.toString(), () => '');
+export function generateConcat(uri: vscodeUri.URI, cells: ICell[], extraCells?: ICell[], disableTypeIgnore = false) {
+    const concat = new NotebookConcatDocument(uri.toString(), () => '', disableTypeIgnore);
     const converter = (c: ICell) => {
         const result: protocol.DidOpenTextDocumentParams = {
             textDocument: {

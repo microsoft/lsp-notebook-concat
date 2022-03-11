@@ -10,7 +10,8 @@ export { isNotebookCell, getConcatDocumentRoot, RefreshNotebookEvent, NotebookCo
 
 export function createConverter(
     notebookHeaderGetter: (uri: vscodeUri.URI) => string,
-    platformGetter: () => string
+    platformGetter: () => string,
+    disableTypeIgnore = false
 ): NotebookConverter {
-    return new NotebookConverterImpl(notebookHeaderGetter, platformGetter);
+    return new NotebookConverterImpl(notebookHeaderGetter, platformGetter, disableTypeIgnore);
 }
