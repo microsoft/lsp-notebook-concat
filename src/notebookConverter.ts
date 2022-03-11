@@ -22,7 +22,10 @@ export class NotebookConverterImpl implements IDisposable {
 
     private mapOfConcatDocumentsWithCellUris = new Map<string, string[]>();
 
-    constructor(private getNotebookHeader: (uri: vscodeUri.URI) => string, private platformGetter: () => string) {}
+    constructor(
+        private getNotebookHeader: (uri: vscodeUri.URI) => string, 
+        private platformGetter: () => string, 
+        private disableTypeIgnore = false) {}
 
     private getDocumentKey(uri: vscodeUri.URI): string {
         if (uri.scheme === InteractiveInputScheme) {
@@ -937,7 +940,7 @@ export class NotebookConverterImpl implements IDisposable {
         const key = this.getDocumentKey(uri);
         let result = this.activeConcats.get(key);
         if (!result) {
-            result = new NotebookConcatDocument(key, this.getNotebookHeader);
+            result = new NotebookConcatDocument(key, this.getNotebookHeader, this.disableTypeIgnore);
             this.activeConcats.set(key, result);
         }
         return result;

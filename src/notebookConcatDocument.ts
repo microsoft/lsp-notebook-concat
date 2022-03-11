@@ -97,7 +97,10 @@ export class NotebookConcatDocument implements ITextDocument {
     private _lines: NotebookConcatLine[] = [];
     private _realLines: NotebookConcatLine[] = [];
 
-    constructor(public key: string, private readonly getNotebookHeader: (uri: vscodeUri.URI) => string) {}
+    constructor(
+        public key: string, 
+        private readonly getNotebookHeader: (uri: vscodeUri.URI) => string, 
+        private readonly _disableTypeIgnore = false) {}
 
     // Handles changes in the real cells and maps them to changes in the concat document.
     // This log expression is useful for debugging
@@ -743,7 +746,7 @@ export class NotebookConcatDocument implements ITextDocument {
         let spanOffset = 0;
         let lineOffset = 0;
         lines.forEach((l) => {
-            if (TypeIgnoreTransforms.find((transform) => transform.regex.test(l))) {
+            if (!this._disableTypeIgnore && TypeIgnoreTransforms.find((transform) => transform.regex.test(l))) {
                 // This means up to the current text needs to be turned into a span
                 spans.push(
                     this.createSpan(
