@@ -11,7 +11,7 @@ import { createLocation, createPosition, createRange } from './helper';
 /**
  * Class responsible for converting incoming requests to outgoing types based on a concatenated document instead.
  */
-export type NotebookConverter = InstanceType<typeof NotebookConverterImpl>
+export type NotebookConverter = InstanceType<typeof NotebookConverterImpl>;
 
 export class NotebookConverterImpl implements IDisposable {
     private activeConcats: Map<string, NotebookConcatDocument> = new Map<string, NotebookConcatDocument>();
@@ -23,9 +23,10 @@ export class NotebookConverterImpl implements IDisposable {
     private mapOfConcatDocumentsWithCellUris = new Map<string, string[]>();
 
     constructor(
-        private getNotebookHeader: (uri: vscodeUri.URI) => string, 
-        private platformGetter: () => string, 
-        private disableTypeIgnore = false) {}
+        private getNotebookHeader: (uri: vscodeUri.URI) => string,
+        private platformGetter: () => string,
+        private disableTypeIgnore = false
+    ) {}
 
     private getDocumentKey(uri: vscodeUri.URI): string {
         if (uri.scheme === InteractiveInputScheme) {
@@ -143,7 +144,9 @@ export class NotebookConverterImpl implements IDisposable {
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public toNotebookWorkspaceSymbols(symbols: protocol.SymbolInformation[] | null | undefined) {
+    public toNotebookWorkspaceSymbols(
+        symbols: protocol.SymbolInformation[] | protocol.WorkspaceSymbol[] | null | undefined
+    ) {
         if (Array.isArray(symbols)) {
             return symbols.map(this.toNotebookWorkspaceSymbol.bind(this));
         }
@@ -333,11 +336,14 @@ export class NotebookConverterImpl implements IDisposable {
 
     public toNotebookSymbolFromSymbolInformation(
         cellOrConcatUri: protocol.TextDocumentIdentifier | string,
-        symbol: protocol.SymbolInformation
-    ): protocol.SymbolInformation {
+        symbol: protocol.SymbolInformation | protocol.WorkspaceSymbol
+    ): protocol.SymbolInformation | protocol.WorkspaceSymbol {
         return {
             ...symbol,
-            location: this.toNotebookLocationFromRange(cellOrConcatUri, symbol.location.range)
+            location:
+                'range' in symbol.location
+                    ? this.toNotebookLocationFromRange(cellOrConcatUri, symbol.location.range)
+                    : { uri: this.toNotebookUri(symbol.location.uri) }
         };
     }
 
@@ -717,7 +723,9 @@ export class NotebookConverterImpl implements IDisposable {
         return typeof input === 'string' ? vscodeUri.URI.parse(input) : vscodeUri.URI.parse(input.uri);
     }
 
-    private toNotebookWorkspaceSymbol(symbol: protocol.SymbolInformation): protocol.SymbolInformation {
+    private toNotebookWorkspaceSymbol(
+        symbol: protocol.SymbolInformation | protocol.WorkspaceSymbol
+    ): protocol.SymbolInformation | protocol.WorkspaceSymbol {
         // Figure out what cell if any the symbol is for
         return this.toNotebookSymbolFromSymbolInformation(symbol.location.uri, symbol);
     }

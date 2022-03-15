@@ -5,7 +5,7 @@
 import * as vscodeUri from 'vscode-uri';
 import * as protocol from 'vscode-languageserver-protocol';
 import * as path from 'path';
-import * as shajs from 'sha.js';
+import * as shajs from 'object-hash';
 import {
     findLastIndex,
     InteractiveInputScheme,
@@ -98,9 +98,10 @@ export class NotebookConcatDocument implements ITextDocument {
     private _realLines: NotebookConcatLine[] = [];
 
     constructor(
-        public key: string, 
-        private readonly getNotebookHeader: (uri: vscodeUri.URI) => string, 
-        private readonly _disableTypeIgnore = false) {}
+        public key: string,
+        private readonly getNotebookHeader: (uri: vscodeUri.URI) => string,
+        private readonly _disableTypeIgnore = false
+    ) {}
 
     // Handles changes in the real cells and maps them to changes in the concat document.
     // This log expression is useful for debugging
@@ -894,7 +895,7 @@ export class NotebookConcatDocument implements ITextDocument {
             // Path has to match no matter how many times we open it.
             const concatFilePath = path.join(
                 dir,
-                `${NotebookConcatPrefix}${shajs('sha1').update(cellUri.fsPath).digest('hex').substring(0, 12)}.py`
+                `${NotebookConcatPrefix}${shajs.sha1(cellUri.fsPath).substring(0, 12)}.py`
             );
             this._concatUri = vscodeUri.URI.file(concatFilePath);
             this._notebookUri = this._interactiveWindow
