@@ -1,6 +1,6 @@
 {
     "name": "@vscode/lsp-notebook-concat",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "description": "Notebook cell concatentation for language servers",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "license": "MIT",
     "dependencies": {
         "object-hash": "^3.0.0",
-        "vscode-languageserver-protocol": "^3.17.0-next.17",
+        "vscode-languageserver-protocol": "^3.17.0-next.20",
         "vscode-uri": "^3.0.2"
     },
     "devDependencies": {
