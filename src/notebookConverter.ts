@@ -213,7 +213,7 @@ export class NotebookConverterImpl implements IDisposable {
         return concat.concatPositionAt(createLocation(cell.uri, createRange(position, position)));
     }
 
-    public toConcatPositions(cell: protocol.TextDocumentIdentifier, positions: protocol.Position[]) {
+    public toConcatPositions(cell: protocol.TextDocumentIdentifier, positions: readonly protocol.Position[]) {
         return positions.map((p) => this.toConcatPosition(cell, p));
     }
 
