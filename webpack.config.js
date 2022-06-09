@@ -29,6 +29,10 @@ const config = {
             path: require.resolve('path-browserify')
         }
     },
+    externals: {
+        'vscode-languageserver-protocol': 'vscode-languageserver-protocol',
+        'vscode-jsonrpc': 'vscode-jsonrpc'
+    },
     module: {
         rules: [
             {
