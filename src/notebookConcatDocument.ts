@@ -26,7 +26,7 @@ import { createPosition, createRange } from './helper';
 
 type NotebookSpan = {
     uri: vscodeUri.URI;
-    fragment: number;
+    fragment: string;
     inRealCell: boolean;
     startOffset: number;
     endOffset: number;
@@ -232,8 +232,7 @@ export class NotebookConcatDocument implements ITextDocument {
         const newCode = `${e.textDocument.text.replace(/\r/g, '')}\n`;
 
         // Compute 'fragment' portion of URI. It's the tentative cell index
-        const fragment =
-            cellUri.scheme === InteractiveInputScheme ? -1 : parseInt(cellUri.fragment.substring(2) || '0');
+        const fragment = cellUri.scheme === InteractiveInputScheme ? '' : cellUri.fragment;
 
         // That fragment determines order in the list (if we're not forcing append)
         const insertIndex = forceAppend ? this._spans.length : this.computeInsertionIndex(fragment);
@@ -658,8 +657,7 @@ export class NotebookConcatDocument implements ITextDocument {
         realOffset: number
     ): NotebookSpan {
         // Compute fragment based on cell uri
-        const fragment =
-            cellUri.scheme === InteractiveInputScheme ? -1 : parseInt(cellUri.fragment.substring(2) || '0');
+        const fragment = cellUri.scheme === InteractiveInputScheme ? '' : cellUri.fragment;
         return {
             fragment,
             uri: cellUri,
@@ -675,8 +673,7 @@ export class NotebookConcatDocument implements ITextDocument {
 
     private createTypeIgnoreSpan(cellUri: vscodeUri.URI, offset: number, realOffset: number): NotebookSpan {
         // Compute fragment based on cell uri
-        const fragment =
-            cellUri.scheme === InteractiveInputScheme ? -1 : parseInt(cellUri.fragment.substring(2) || '0');
+        const fragment = cellUri.scheme === InteractiveInputScheme ? '' : cellUri.fragment;
         return {
             fragment,
             uri: cellUri,
@@ -700,7 +697,7 @@ export class NotebookConcatDocument implements ITextDocument {
             }
             return [
                 {
-                    fragment: -1,
+                    fragment: '',
                     uri: cellUri,
                     inRealCell: false,
                     startOffset: 0,
@@ -715,7 +712,7 @@ export class NotebookConcatDocument implements ITextDocument {
 
         return [
             {
-                fragment: -1,
+                fragment: '',
                 uri: cellUri,
                 inRealCell: false,
                 startOffset: 0,
@@ -877,13 +874,13 @@ export class NotebookConcatDocument implements ITextDocument {
         return result as protocol.Range;
     }
 
-    private computeInsertionIndex(fragment: number): number {
+    private computeInsertionIndex(fragment: string): number {
         // Remember if last cell is already the input box
         const inputBoxPresent = this._spans[this._spans.length - 1]?.uri?.scheme === InteractiveInputScheme;
         const totalLength = inputBoxPresent ? this._spans.length - 1 : this._spans.length;
 
         // Find index based on fragment
-        const index = fragment == -1 ? this._spans.length : this._spans.findIndex((c) => c.fragment > fragment);
+        const index = fragment === '' ? this._spans.length : this._spans.findIndex((c) => c.fragment > fragment);
         return index < 0 ? totalLength : index;
     }
 
