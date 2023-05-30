@@ -37,8 +37,12 @@ export class NotebookConverterImpl implements IDisposable {
             }
         }
 
-        if (uri.scheme === InteractiveScheme) {
-            return uri.path.toLowerCase();
+        if (uri.path.endsWith('.interactive')) {
+            // input
+            const counter = /\/Interactive-(\d+)/.exec(uri.path);
+            if (counter && counter[1]) {
+                return `interactive-${counter[1]}.interactive`;
+            }
         }
 
         // Use the path of the doc uri. It should be the same for all cells
