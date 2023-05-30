@@ -3,7 +3,7 @@
 import * as vscodeUri from 'vscode-uri';
 import * as protocol from 'vscode-languageserver-protocol';
 
-import { InteractiveInputScheme, InteractiveScheme, isNotebookCell } from './common/utils';
+import { InteractiveInputScheme, isNotebookCell } from './common/utils';
 import { IDisposable, ITextDocument, RefreshNotebookEvent } from './types';
 import { NotebookConcatDocument } from './notebookConcatDocument';
 import { createLocation, createPosition, createRange } from './helper';
