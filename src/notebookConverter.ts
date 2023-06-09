@@ -38,7 +38,6 @@ export class NotebookConverterImpl implements IDisposable {
         }
 
         if (uri.path.endsWith('.interactive')) {
-            // input
             const counter = /\/Interactive-(\d+)/.exec(uri.path);
             if (counter && counter[1]) {
                 return `interactive-${counter[1]}.interactive`;
