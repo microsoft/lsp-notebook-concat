@@ -3,7 +3,7 @@
 import * as vscodeUri from 'vscode-uri';
 import * as protocol from 'vscode-languageserver-protocol';
 
-import { InteractiveInputScheme, InteractiveScheme, isNotebookCell } from './common/utils';
+import { InteractiveInputScheme, isNotebookCell } from './common/utils';
 import { IDisposable, ITextDocument, RefreshNotebookEvent } from './types';
 import { NotebookConcatDocument } from './notebookConcatDocument';
 import { createLocation, createPosition, createRange } from './helper';
@@ -37,8 +37,11 @@ export class NotebookConverterImpl implements IDisposable {
             }
         }
 
-        if (uri.scheme === InteractiveScheme) {
-            return uri.path.toLowerCase();
+        if (uri.path.endsWith('.interactive')) {
+            const counter = /\/Interactive-(\d+)/.exec(uri.path);
+            if (counter && counter[1]) {
+                return `interactive-${counter[1]}.interactive`;
+            }
         }
 
         // Use the path of the doc uri. It should be the same for all cells

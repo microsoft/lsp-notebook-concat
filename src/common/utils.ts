@@ -38,6 +38,7 @@ export function findLastIndex<T>(array: Array<T>, predicate: (e: T) => boolean) 
 export function isInteractiveCell(cellUri: vscodeUri.URI): boolean {
     return (
         cellUri.fragment.includes(InteractiveScheme) ||
+        cellUri.path.endsWith('.interactive') ||
         cellUri.scheme.includes(InteractiveInputScheme) ||
         cellUri.scheme.includes(InteractiveScheme)
     );
